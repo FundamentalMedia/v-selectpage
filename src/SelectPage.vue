@@ -11,7 +11,7 @@
         </div>
 
         <!-- drop down list -->
-        <v-dropdown ref="drop" @show-change="showChange" :width="width" :align="rtl?'right':'left'" >
+        <v-dropdown align="center" ref="drop" @show-change="showChange" :width="width" :align="rtl?'right':'left'" >
             <!-- header bar -->
             <div class="sp-header">
                 <h3 v-html="headerTitle"></h3>
@@ -120,8 +120,15 @@
             data(){
                 this.sortList();
                 this.populate();
-                if(this.picked.length) this.picked = [];
-                else this.initSelection();
+                if(this.picked.length) {
+                  let newPicked = [];
+                  this.picked.forEach(picked => {
+                    this.data.forEach(row => {
+                      if (row[this.keyField] === picked[this.keyField]) newPicked.push(picked);
+                    });
+                  });
+                  this.picked = newPicked;
+                } else this.initSelection();
             },
             pageNumber(){
                 this.populate();
